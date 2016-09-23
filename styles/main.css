@@ -1,0 +1,18 @@
+input[type="text"],input[type="text"]:focus
+{
+  box-shadow: none;
+  padding: 10px;
+  border: 0px;
+  border-bottom: 1px solid #4bacff;
+  background-color: white;
+  font-size: 1em;
+  width:100%;
+  outline:none;
+}
+.store-select select{
+height: 40px;
+/* padding: 20px; */
+border-radius: 5px;
+margin-left: 10px;
+padding: 5px;
+}
