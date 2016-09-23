@@ -1,0 +1,6 @@
+{
+    "require": {
+        "slim/slim": "3.0",
+        "klarna/php-xmlrpc": "^5.0"
+    }
+}
