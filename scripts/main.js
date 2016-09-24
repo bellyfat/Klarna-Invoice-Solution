@@ -3,7 +3,8 @@ $('#getadress').on('click',function()
 {
     //$('#getadress').toggleClass('is-disabled');
     var pno  = $('#pno').val();
-    $.get('api/adress/'+pno,function(data)
+    var selectedstore = $("#purchasestore").val();
+    $.get('api/'+selectedstore+'/adress/'+pno,function(data)
     {
         console.log(data);
         CustomerAddresses = data;

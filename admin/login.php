@@ -1,6 +1,6 @@
 <?php
 
-include "db.php";
+include "../db.php";
 
 global $dblink;
 if(isset($_POST["login"]))

@@ -1,72 +1,65 @@
 <?php
-include('admin/db.php');
+include('db.php');
+include('functions.php');
 global $dblink;
 verifyLoggedin();
 $userID= $_SESSION["user"];
+echo $userID;
+error_reporting(E_ALL);
+ini_set('display_errors',1);
 $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid from user_stores WHERE userid=$userID)");
-
+echo mysqli_num_rows($stores);
 ?>
 
 <!doctype html>
-<html class="no-js cui__baseline" lang="">
+<html class="" lang="">
   <head>
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>KlarnaInvoice</title>
+    <title>Klarna Invoice</title>
 
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
       <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700'
             rel='stylesheet'
             type='text/css'>
-    <!-- Place favicon.ico in the root directory -->
+      <link rel="stylesheet" href="styles/foundation.min.css">
+      <link rel="stylesheet" href="styles/main.css">
 
-    <!-- build:css styles/vendor.css -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
-
-    <!-- build:css styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-      <link rel="stylesheet" href="styles/klarna.css">
-
-    <!-- endbuild -->
     
-    <!-- build:js scripts/vendor/modernizr.js -->
-    <script src="/bower_components/modernizr/modernizr.js"></script>
-    <!-- endbuild -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+
   </head>
   <body>
     <!--[if lt IE 10]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="cui__baseline__content--main">
+    <div class="container">
         <form method="post" id="buyForm" action="api/buy">
-      <div class="cui__input is-filled is-focused">
-        <label class="cui__input__label">
+            <div class="row">
+      <div class="large-3 columns small-6">
+        <label class="">
           Please write pno / orgnummer
         </label>
-        <input  class="cui__input__input" id="pno"  type="text">
+        <input  class="" id="pno"  type="text">
       </div>
 <br>
-        <a id="getadress" class="cui__button--primary">
+        <a id="getadress" href="#" class="">
             Vidare
         </a>
-        <div class="cui__dropdown--native is-selected">
-            <label class="cui__dropdown--native__label">
+
+            <label class="">
                Select customer adress
             </label>
-            <div id="selectedCustomer" class="cui__dropdown--native__current-option">
 
-            </div>
-
-            <select id="adresses" class="cui__dropdown--native__select  ">
+            <select id="adresses" class="">
             </select>
-        </div>
+
 
             <div class="store-select">
-                <label>Select Store<select name="purchasestore">
+                <label>Select Store<select id="purchasestore" name="purchasestore">
                     <?php
                     while($st = mysqli_fetch_assoc($stores))
                     {

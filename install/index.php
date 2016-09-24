@@ -5,12 +5,14 @@
  * Date: 2016-09-23
  * Time: 14:31
  */
-bindtextdomain("myPHPApp", "./localization");
-echo $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-//$locale = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+echo bindtextdomain("klarna", "./localization");
+Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 $languages = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
 $lang= $languages[0];
-setlocale($lang);
+
+$lang = str_replace("-","_",$lang);
+echo $lang;
+setlocale(LC_ALL,$lang);
 
 if(isset($_POST["install"])) {
     $prefix = $_POST["prefix"];
@@ -20,6 +22,7 @@ if(isset($_POST["install"])) {
     $adminuser = $_POST["adminuser"];
     $adminpass = $_POST["adminpass"];
     $dblink = mysqli_connect($server, $user, $pass);
+    echo mysqli_error($dblink);
     if (!$dblink) {
         die("Incorrect Params - Could not connect");
     }

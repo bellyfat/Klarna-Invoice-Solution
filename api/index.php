@@ -7,7 +7,8 @@
  */
 
 require 'vendor/autoload.php';
-include ("../admin/db.php");
+include ("../db.php");
+include ('KlarnaHelper.php');
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use Klarna\XMLRPC\Klarna;
@@ -22,10 +23,10 @@ $configuration = [
 ];
 $c = new \Slim\Container($configuration);
 $app = new \Slim\App($c);
-$app->get('/adress/{pno}', function (Request $request, Response $response) {
+$app->get('/{store}/adress/{pno}', function (Request $request, Response $response) {
     global $dblink;
     $klarnaHelper = new KlarnaHelper($dblink);
-    $storeid= $_POST["purchasestore"];
+    $storeid= $pno = $request->getAttribute('store');
     $k = $klarnaHelper->getConfigForStore($storeid);
 
     $pno = $request->getAttribute('pno');
@@ -38,7 +39,8 @@ $app->get('/adress/{pno}', function (Request $request, Response $response) {
         "lastname"=>utf8_encode($ad->getLastName()),
         "street"=>utf8_encode($ad->getStreet()),
         "city"=>utf8_encode($ad->getCity()),
-        "postal"=>utf8_encode($ad->getZipCode()));
+        "postal"=>utf8_encode($ad->getZipCode()),
+        "company" =>utf8_encode($ad->getCompanyName()));
     }
     $newResponse = $response->withJson($res);
     return $newResponse;
