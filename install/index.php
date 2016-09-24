@@ -5,7 +5,12 @@
  * Date: 2016-09-23
  * Time: 14:31
  */
-
+bindtextdomain("myPHPApp", "./localization");
+echo $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+//$locale = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+$languages = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+$lang= $languages[0];
+setlocale($lang);
 
 if(isset($_POST["install"])) {
     $prefix = $_POST["prefix"];
@@ -86,27 +91,26 @@ ALTER TABLE `user`
 <link rel="stylesheet" href="../styles/foundation.min.css">
 <link rel="stylesheet" href="../styles/main.css">
 <div class="row">
-
     <form method="post">
     <div class="large-3 small-12 columns">
-    <input type="text" placeholder="server" name="server">
+    <input type="text" placeholder="<?php echo gettext("Server")?>" name="server">
     </div>
     <div class="large-3 small-12 columns">
-    <input type="text" placeholder="prefix" name="prefix">
+    <input type="text" placeholder="<?php echo gettext("DB Prefix")?>" name="prefix">
     </div>
     <div class="large-3 small-12 columns">
-    <input type="text" placeholder="user" name="user">
+    <input type="text" placeholder="<?php echo gettext("User")?>" name="user">
     </div>
     <div class="large-3 small-12 columns">
-    <input type="text" placeholder="pass" name="pass">
+    <input type="text" placeholder="<?php echo gettext("Password")?>" name="pass">
     </div>
     <div class="large-3 small-12 columns">
-    <input type="text" placeholder="adminuser" name="adminuser">
+    <input type="text" placeholder="<?php echo gettext("Admin username")?>" name="adminuser">
     </div>
     <div class="large-3 small-12 columns">
-    <input type="text" placeholder="adminpass" name="adminpass">
+    <input type="text" placeholder="<?php echo gettext("Admin password")?>" name="adminpass">
     </div>
-    <input type="submit" class="button" name="install" value="Install"/>
+    <input type="submit" class="button" name="install" value="<?php echo gettext("Install")?>"/>
 </form>
 
 </div>

@@ -1,1 +1,0 @@
-<?php $dblink = mysqli_connect("localhost", "test", "test", "awdkpm"); ?>

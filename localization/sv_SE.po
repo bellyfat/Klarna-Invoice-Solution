@@ -1,0 +1,44 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2016-09-24 09:29+0200\n"
+"PO-Revision-Date: 2016-09-24 09:31+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: sv_SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.9\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: api/vendor\n"
+
+#: install/index.php:90
+msgid "Server"
+msgstr ""
+
+#: install/index.php:93
+msgid "DB Prefix"
+msgstr ""
+
+#: install/index.php:96
+msgid "User"
+msgstr "Användare"
+
+#: install/index.php:99
+msgid "Password"
+msgstr "Lösenord"
+
+#: install/index.php:102
+msgid "Admin username"
+msgstr "Administratör användare"
+
+#: install/index.php:105
+msgid "Admin password"
+msgstr "Administratör "
+
+#: install/index.php:107
+msgid "Install"
+msgstr "Installera"
