@@ -21,8 +21,9 @@ $('#getadress').on('click',function()
 $('#buy').on('click',function(e)
 {
     e.preventDefault();
+    var selectedstore = $("#purchasestore").val();
     //$(this).addClass("is-disabled");
-    $.post('api/buy', $('#buyForm').serialize(),function(data)
+    $.post('api/'+selectedstore+'/buy', $('#buyForm').serialize(),function(data)
     {
         if(data.invno)
         {

@@ -26,7 +26,7 @@ $app = new \Slim\App($c);
 $app->get('/{store}/adress/{pno}', function (Request $request, Response $response) {
     global $dblink;
     $klarnaHelper = new KlarnaHelper($dblink);
-    $storeid= $pno = $request->getAttribute('store');
+    $storeid = $request->getAttribute('store');
     $k = $klarnaHelper->getConfigForStore($storeid);
 
     $pno = $request->getAttribute('pno');
@@ -45,25 +45,11 @@ $app->get('/{store}/adress/{pno}', function (Request $request, Response $respons
     $newResponse = $response->withJson($res);
     return $newResponse;
 });
-$app->post('/buy', function (Request $request, Response $response) {
+$app->post('/{store}/buy', function (Request $request, Response $response) {
     global $dblink;
+    $storeid = $request->getAttribute('store');
     $klarnaHelper = new KlarnaHelper($dblink);
-    $storeid= $_POST["purchasestore"];
     $k = $klarnaHelper->getConfigForStore($storeid);
-    $server =   Klarna::BETA;
-    if($store["testmode"] == 0)
-    {
-        $server =   Klarna::LIVE;
-    }
-
-    $k->config(
-        $store["eid"],              // Merchant ID
-        $store["shared"], // Shared secret
-        Country::SE,    // Purchase country
-        Language::SV,   // Purchase language
-        Currency::SEK,  // Purchase currency
-        $server        // Server
-    );
 
     $data = $request->getParsedBody();
     $ticket_data = [];
