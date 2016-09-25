@@ -2,11 +2,14 @@ input[type="text"],input[type="text"]:focus
 {
   box-shadow: none;
   padding: 10px;
-  border: 0px;
+  border: 0;
   border-bottom: 1px solid #4bacff;
   background-color: white;
   font-size: 1em;
   width:100%;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
   outline:none;
 }
 .store-select select{
