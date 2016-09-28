@@ -3,6 +3,7 @@
 include "../db.php";
 
 global $dblink;
+echo $path_only = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 if(isset($_POST["login"]))
 {
     $enteredPass = $_POST["pass"];
@@ -11,11 +12,11 @@ if(isset($_POST["login"]))
     if(mysqli_num_rows($res) == 1)
     {
         $user = mysqli_fetch_assoc($res);
-        if(password_verify($_POST["pass"],$user["passwordhash"]));
+        if(password_verify($_POST["pass"]."".sha1($_POST["pass"]),$user["passwordhash"]));
         {
             $_SESSION["loggedInUser"] = true;
             $_SESSION["user"] = $user["id"];
-            header("Location:/KlarnaInvoice/");
+            header("Location:/kpm_solution/");
         }
 
     }

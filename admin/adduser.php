@@ -12,7 +12,7 @@ if(isset($_POST["saveuser"]))
     global $dblink;
     $email = $_POST["email"];
     $pass = $_POST["wantedpassword"];
-    $createHash = password_hash($pass."".$passHash,PASSWORD_BCRYPT);
+    $createHash = password_hash($pass."".sha1($pass),PASSWORD_BCRYPT);
     mysqli_query($dblink,"INSERT INTO user (email,passwordhash,level) VALUES ('$email','$createHash',1)");
     //header("Location:listusers.php");
 }

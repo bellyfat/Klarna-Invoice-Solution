@@ -12,6 +12,10 @@ MYSQL Database
 2. Visit /install
 3. Provide MySQL server details and super-admin credentials
 
+**Note**
+   Only 1 super-admin is allowed. This admin will then be able to create additional users and assign store-privileges.
+
 **Supported Countries**
+
 Sweden
 
