@@ -225,6 +225,7 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
 <script   src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
 <!-- build:js scripts/main.js -->
 <script src="scripts/main.js"></script>
+<script src="scripts/order.js"></script>
 <!-- endbuild -->
 </body>
 </html>

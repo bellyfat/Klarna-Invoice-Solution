@@ -26,7 +26,7 @@ if(isset($_POST["install"])) {
     if (!$dblink) {
         die("Incorrect Params - Could not connect");
     }
-    $fileres = file_put_contents("../db.php", "<?php session_start(); \$dblink = mysqli_connect(\"" . $server . "\", \"" . $user . "\", \"" . $pass . "\", \"" . $prefix . "_kpm\"); ?>");
+    $fileres = file_put_contents("../db.php", "<?php session_start(); \$rootFolder = '".$install_folder."'; \$dblink = mysqli_connect(\"" . $server . "\", \"" . $user . "\", \"" . $pass . "\", \"" . $prefix . "_kpm\"); ?>");
     if($fileres === false)
     {
         die("something went wrong with file-creation");
