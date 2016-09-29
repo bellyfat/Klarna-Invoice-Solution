@@ -19,3 +19,7 @@ border-radius: 5px;
 margin-left: 10px;
 padding: 5px;
 }
+.address-preview span{
+  width: 100%;
+  float: left;
+}

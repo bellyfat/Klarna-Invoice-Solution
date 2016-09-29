@@ -15,7 +15,7 @@ $("#order-type").on('change',function()
             {
                 console.log(item);
                 $(".orderlist").append('<div class="row">'+
-                '<div class="small-4 columns"><span>'+item.reservation+'</span></div>'+
+                '<div class="small-4 columns"><a href="orderview.php?id='+item.id+'">'+item.reservation+'</a></div>'+
                 '<div class="small-4 columns"><span>'+item.status+'</span></div>'+
                 '<div class="small-4 columns"></div>'+
                 '</div>');
