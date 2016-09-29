@@ -57,6 +57,37 @@ if(isset($_POST["install"])) {
         ) ENGINE=InnoDB DEFAULT CHARSET=latin1;';
     mysqli_query($dblink,$sql);
     echo mysqli_error($dblink);
+    $sql = 'CREATE TABLE `address` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `firstname` varchar(255) NOT NULL,
+  `lastname` varchar(255) NOT NULL,
+  `street` varchar(255) NOT NULL,
+  `postal` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `country` varchar(255) NOT NULL,
+  `company` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;';
+    mysqli_query($dblink,$sql);
+    echo mysqli_error($dblink);
+    $sql = 'CREATE TABLE `order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `reservation` varchar(255) NOT NULL,
+  `invoice` varchar(255) DEFAULT NULL,
+  `status` enum(\'Pending\',\'Shipped\',\'Cancelled\',\'Reserved\') NOT NULL DEFAULT \'Reserved\',
+  `billing` int(11) NOT NULL,
+  `shipping` int(11) NOT NULL,
+  `storeid` int(11) NOT NULL,
+  `testmode` int(11) NOT NULL DEFAULT \'1\',
+  PRIMARY KEY (`id`),
+  KEY `storeid` (`storeid`),
+  KEY `billing` (`billing`),
+  KEY `shipping` (`shipping`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;';
+    mysqli_query($dblink,$sql);
+    echo mysqli_error($dblink);
+
     $sql = 'ALTER TABLE `store`
   ADD PRIMARY KEY (`id`);';
     mysqli_query($dblink,$sql);
@@ -86,6 +117,12 @@ ALTER TABLE `user`
   ALTER TABLE `user_stores`
   ADD CONSTRAINT `store_exists` FOREIGN KEY (`storeid`) REFERENCES `store` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `user_exists` FOREIGN KEY (`userid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;';
+    mysqli_query($dblink,$sql);
+    echo mysqli_error($dblink);
+    $sql = 'ALTER TABLE `order`
+  ADD CONSTRAINT `billing` FOREIGN KEY (`billing`) REFERENCES `address` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `shipping` FOREIGN KEY (`shipping`) REFERENCES `address` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `store_order` FOREIGN KEY (`storeid`) REFERENCES `store` (`id`);';
     mysqli_query($dblink,$sql);
     echo mysqli_error($dblink);
     $createHash = password_hash($adminpass."".sha1($adminpass),PASSWORD_BCRYPT);

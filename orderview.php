@@ -69,8 +69,8 @@ $billing = mysqli_fetch_assoc($getbilling);
                     <?php  echo $billing["city"];?></span>
             </div>
         </div>
-        </div>
     </div>
+</div>
 </div>
 <script>
     (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
