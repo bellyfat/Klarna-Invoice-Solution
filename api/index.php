@@ -160,4 +160,47 @@ $app->get('/orders/{status}[/from/{fromdate}/to/{todate}]', function (Request $r
     $newResponse = $newResponse->write(json_encode($res));
     return $newResponse;
 });
+$app->post('/{store}/credit', function (Request $request, Response $response) {
+    global $dblink;
+    $storeid = $request->getAttribute('store');
+    $data = $request->getParsedBody();
+    $orderid = $data["id"];
+    $storeid = $request->getAttribute('store');
+    $klarnaHelper = new KlarnaHelper($dblink);
+    $k = $klarnaHelper->getConfigForStore($storeid);
+    $ref = $request->getHeader("Referer");
+    try
+    {
+       $k->creditInvoice($orderid);
+    }
+    catch(Exception $e)
+    {
+        $newResponse = $response->withStatus(404);
+        return $newResponse;
+    }
+    mysqli_query($dblink,"UPDATE `order` SET `status` = 'Cancelled' WHERE `invoice` = '$orderid' ");
+    $newResponse = $response->withStatus(302)->withHeader("Location",$ref);
+    return $newResponse;
+});
+$app->post('/{store}/activate', function (Request $request, Response $response) {
+    global $dblink;
+    $storeid = $request->getAttribute('store');
+    $data = $request->getParsedBody();
+    $orderid = $data["id"];
+    $storeid = $request->getAttribute('store');
+    $klarnaHelper = new KlarnaHelper($dblink);
+    $k = $klarnaHelper->getConfigForStore($storeid);
+    $ref = $request->getHeader("Referer");
+    try
+    {
+        $res = $k->activate($orderid);
+    }
+    catch(Exception $e)
+    {
+        $newResponse = $response->withStatus(404);
+    }
+    mysqli_query($dblink,"UPDATE `order` SET `status` = 'Shipped', `invoice` = '$res[1]' WHERE `reservation` = '$orderid' ");
+    $newResponse = $response->withStatus(302)->withHeader("Location",$ref);
+    return $newResponse;
+});
 $app->run();
