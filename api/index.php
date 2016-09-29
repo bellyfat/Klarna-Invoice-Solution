@@ -198,6 +198,7 @@ $app->post('/{store}/activate', function (Request $request, Response $response) 
     catch(Exception $e)
     {
         $newResponse = $response->withStatus(404);
+        return $newResponse;
     }
     mysqli_query($dblink,"UPDATE `order` SET `status` = 'Shipped', `invoice` = '$res[1]' WHERE `reservation` = '$orderid' ");
     $newResponse = $response->withStatus(302)->withHeader("Location",$ref);
