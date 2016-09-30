@@ -20,6 +20,11 @@ class KlarnaHelper
     function getConfigForStore($storeid)
     {
         $k = new Klarna();
+        $userID = $_SESSION["user"];
+        if(!$this->verifyUserForStore($userID,$storeid))
+        {
+            die("No access on store");
+        }
         $getstore = mysqli_query($this->db,"SELECT * FROM `store` where `id` = $storeid");
         $store= mysqli_fetch_assoc($getstore);
         $server =   Klarna::BETA;
@@ -37,5 +42,14 @@ class KlarnaHelper
             $server        // Server
         );
         return $k;
+    }
+    function verifyUserForStore($user,$store)
+    {
+        $res = mysqli_query($this->db,"SELECT * FROM `user_stores` WHERE `userid` = $user AND `storeid` = $store");
+        if(!$res)
+        {
+           return false;
+        }
+        return true;
     }
 }
