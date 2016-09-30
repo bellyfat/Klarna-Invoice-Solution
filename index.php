@@ -22,11 +22,7 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
           type='text/css'>
     <link rel="stylesheet" href="styles/foundation.min.css">
     <link rel="stylesheet" href="styles/main.css">
-
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
-
 </head>
 <body>
 <!--[if lt IE 10]>
@@ -34,7 +30,6 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
 <![endif]-->
 <?php include('menu.php'); ?>
 <div class="container">
-
     <form method="post" id="buyForm" action="api/buy">
         <div class="row">
             <div class="large-6 columns small-6">
@@ -62,7 +57,7 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
         <div class="row">
             <div class="large-12 columns">
 
-                <div class="store-select">
+                <div class="store-select small-12">
                     <label>Select Store<select id="purchasestore" name="purchasestore">
                             <?php
                             while($st = mysqli_fetch_assoc($stores))
