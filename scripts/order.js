@@ -43,7 +43,7 @@ $('#buy').on('click',function(e)
     {
         if(data.invno)
         {
-            $('.cui__dialog__overlay').addClass('is-visible');
+            $('.dialog').show();
             $('#invoiceLabel').html(data.invno);
             $('#amountlabel').html(data.amount+' KR');
         }
@@ -70,8 +70,8 @@ $('#addNewProd').on('click',function()
     var copy = $('#orderLine').html();
     $('#orderLine').append(copy);
 });
-$('svg').click(function () {
-    $('.cui__dialog__overlay').removeClass('is-visible');
+$('.dialog .close').click(function () {
+    $('.dialog').hide();
     window.location.reload();
 });
 $('#paymentmethods').on('change',function()

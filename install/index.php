@@ -36,7 +36,7 @@ if(isset($_POST["install"])) {
     $dblink = mysqli_connect($server, $user, $pass,$prefix."_kpm");
     $sql = file_get_contents('data.sql');
     mysqli_multi_query($dblink,$sql);
-    header("Location:".(dirname(__FILE__))."/complete.php");
+    header("Location:/".$install_folder."/complete.php");
 }
 ?>
 <link rel="stylesheet" href="../styles/foundation.min.css">

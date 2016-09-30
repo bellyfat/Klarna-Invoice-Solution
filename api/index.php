@@ -50,7 +50,6 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
     $storeid = $request->getAttribute('store');
     $klarnaHelper = new KlarnaHelper($dblink);
     $k = $klarnaHelper->getConfigForStore($storeid);
-
     $data = $request->getParsedBody();
     $ticket_data = [];
     $pclass = $data["pclass"];
@@ -65,22 +64,43 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
         $data['customer']['city'],209);
     $orderLines = $data['orderlines'];
     $totalAmount =0;
+$firstname = $address->getFirstName();
+    $lastname =$address->getLastName();
+    $street = $address->getStreet();
+    $postal = $address->getZipCode();
+    $city = $address->getCity();
+    $country = $address->getCountry();
+    $company = $address->getCompanyName();
+    //Adding adress to DB
+    mysqli_query($dblink,"INSERT into `address` (firstname,lastname,street,postal,city,country,company) VALUES ('$firstname','$lastname','$street','$postal','$city','$country','$company')");
+    $shippingAddressId = mysqli_insert_id($dblink);
+    mysqli_query($dblink,"INSERT into `address` (firstname,lastname,street,postal,city,country,company) VALUES ('$firstname','$lastname','$street','$postal','$city','$country','$company')");
+    $billingAddressId = mysqli_insert_id($dblink);
 
+    $items = array();
     for($i = 0; $i < count($orderLines["artno"]); $i++)
     {
 
         if($orderLines["qty"][$i] !== "" &&  $orderLines["artno"][$i] !== "" &&  $orderLines["price"][$i] !== "")
-
-        $k->addArticle(
-            $orderLines["qty"][$i],              // Quantity
-            $orderLines["artno"][$i],     // Article number
-            $orderLines["title"][$i], // Article name/title
-            $orderLines["price"][$i],          // Price
-            $orderLines["vat"][$i],             // 25% VAT
-            0,              // Discount
-            Flags::INC_VAT
-        );
-        $totalAmount += $orderLines["price"][$i];
+        {
+            $k->addArticle(
+                $orderLines["qty"][$i],              // Quantity
+                $orderLines["artno"][$i],     // Article number
+                $orderLines["title"][$i], // Article name/title
+                $orderLines["price"][$i],          // Price
+                $orderLines["vat"][$i],             // 25% VAT
+                0,              // Discount
+                Flags::INC_VAT
+            );
+            $items[] = array(
+                "sku" => $orderLines["artno"][$i],
+                "title" => $orderLines["title"][$i],
+                "qty" =>$orderLines["qty"][$i],
+                "incvat" => $orderLines["price"][$i],
+                "vat"=> $orderLines["vat"][$i]
+            );
+            $totalAmount += $orderLines["price"][$i];
+        }
     }
     $k->setClientIP("192.0.2.9");
     $k->setAddress(Flags::IS_BILLING, $address);
@@ -100,6 +120,22 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
     {
         $inv = $result[0];
         $status = $result[1];
+    }
+    //Creating Order
+    mysqli_query($dblink,"INSERT INTO `order` (reservation,billing,shipping,storeid) VALUES ('$inv',$billingAddressId,$shippingAddressId,$storeid)");
+    $orderID = mysqli_insert_id($dblink);
+    foreach($items as $item)
+    {
+        $name = $item["title"];
+        $sku = $item["sku"];
+        $qt = $item["qty"];
+        $incvat = $item["incvat"];
+        $vat = $item["vat"];
+        $vatcalc = ($vat / 100) + 1;
+        $vatcalc = (($vatcalc - $incvat) * -1);
+
+        mysqli_query($dblink,"INSERT into `orderitem` (orderid,name,artno,incvat,exvat,vat,quantity) VALUES ($orderID,'$name','$sku',$incvat,$vatcalc,$vat,$qt)");
+        echo mysqli_error($dblink);
     }
     $res = array("status" =>$status, "invno" => $inv,"amount"=> $totalAmount);
     $newResponse = $response->withJson($res);

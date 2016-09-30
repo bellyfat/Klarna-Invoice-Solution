@@ -36,14 +36,14 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
 <div class="container">
     <form method="post" id="buyForm" action="api/buy">
         <div class="row">
-            <div class="large-3 columns small-6">
+            <div class="large-6 columns small-6">
                 <label class="">
                     Please write pno / orgnummer
 
                     <input  class="" id="pno"  type="text"></label>
             </div>
-            <div class="large-3 columns small-6">
-                <a id="getadress" href="#" class="">
+            <div class="large-6 columns small-6">
+                <a class="button secondary large" id="getadress" href="#" class="">
                     Vidare
                 </a>
             </div>
@@ -100,13 +100,13 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
                     <input type="text" class="cui__input__input" id="custsurname" value="testlast" name="customer[lname]"/></label>
 
             </div>
-            <div class="large-3 columns small-12">
+            <div class="large-5 columns small-12">
                 <label class="cui__input__label">
                     street
 
                     <input type="text" class="cui__input__input" id="custstreet" value="teststreet" name="customer[street]"/></label>
             </div>
-            <div class="large-3 columns small-12">
+            <div class="large-4 columns small-12">
                 <label class="cui__input__label">
                     city
 
@@ -156,34 +156,35 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
                 </div>
             </div>
         </div>
-        <hr>
-        <a href="#" id="addNewProd" class="small">
-            Add more products
-        </a>
-        <hr>
-        <div class="cui__dropdown--native left three-quarters is-selected">
-            <label class="cui__dropdown--native__label">
-                Invoice Method
+        <div class="row">
+            <a href="#" id="addNewProd" class="small">
+                Add more products
+            </a>
+            <hr>
+            <div class="small-12">
+                <label class="cui__dropdown--native__label">
+                    Invoice Method
+                    <select name="pclass" id="paymentmethods" class="cui__dropdown--native__select">
 
-                <select name="pclass" id="paymentmethods" class="cui__dropdown--native__select">
+                    </select></label>
+            </div>
 
-            </select></label>
+            <div class="small-12 float-right">
+                <button class="button large  float-right" id="buy" class="cui__button--primary left is-disabled">
+                    Invoice
+                </button>
+            </div>
         </div>
-
-        <div class="left quarter">
-            <button id="buy" class="cui__button--primary left is-disabled">
-                Invoice
-            </button>
-        </div>
-
+        <hr>
     </form>
 </div>
 
 
 
-<div class="cui__dialog__content">
-    <div class="cui__dialog__content--inner">
-        <span class="cui__label success">Order Successfull</span>
+<div class="dialog">
+    <div class="dialog-inner">
+        <span class="close button alert">X</span>
+        <span class="label success">Order Successfull</span>
         <h4 class="cui__text-label">
             Klarna ID
         </h4>
@@ -199,12 +200,6 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
         <h2 class="cui__title--secondary">
             <span id="amountlabel"></span>
         </h2>
-
-    </div>
-</div>
-
-<div class="cui__dialog__footer">
-    <div class="cui__dialog__footer--inner">
 
     </div>
 </div>
