@@ -6,19 +6,20 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8mb4 */;
 
 
-CREATE TABLE `address` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `address` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `firstname` varchar(255) NOT NULL,
   `lastname` varchar(255) NOT NULL,
   `street` varchar(255) NOT NULL,
   `postal` varchar(255) NOT NULL,
   `city` varchar(255) NOT NULL,
   `country` varchar(255) NOT NULL,
-  `company` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `company` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 
-CREATE TABLE `order` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `reservation` varchar(255) NOT NULL,
   `invoice` varchar(255) DEFAULT NULL,
@@ -26,75 +27,50 @@ CREATE TABLE `order` (
   `billing` int(11) NOT NULL,
   `shipping` int(11) NOT NULL,
   `storeid` int(11) NOT NULL,
-  `testmode` int(11) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `testmode` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `storeid` (`storeid`),
+  KEY `billing` (`billing`),
+  KEY `shipping` (`shipping`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
-CREATE TABLE `orderitem` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `orderitem` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `orderid` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `artno` varchar(255) NOT NULL,
-  `exvat` int(11) NOT NULL,
-  `incvat` int(11) NOT NULL,
+  `exvat` decimal(11,2) NOT NULL,
+  `incvat` decimal(11,2) NOT NULL,
   `vat` decimal(4,2) NOT NULL,
-  `quantity` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `quantity` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `orderid` (`orderid`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
-CREATE TABLE `store` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `store` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `eid` int(11) NOT NULL,
   `shared` varchar(255) NOT NULL,
-  `testmode` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `testmode` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
   `passwordhash` varchar(255) NOT NULL,
-  `level` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `level` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
-CREATE TABLE `user_stores` (
+CREATE TABLE IF NOT EXISTS `user_stores` (
   `userid` int(11) NOT NULL,
-  `storeid` int(11) NOT NULL
+  `storeid` int(11) NOT NULL,
+  KEY `userid` (`userid`),
+  KEY `storeid` (`storeid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
-ALTER TABLE `address`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `order`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `storeid` (`storeid`),
-  ADD KEY `billing` (`billing`),
-  ADD KEY `shipping` (`shipping`);
-
-ALTER TABLE `orderitem`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `orderid` (`orderid`);
-
-ALTER TABLE `store`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `user_stores`
-  ADD KEY `userid` (`userid`),
-  ADD KEY `storeid` (`storeid`);
-
-
-ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-ALTER TABLE `orderitem`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-ALTER TABLE `store`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 ALTER TABLE `order`
   ADD CONSTRAINT `billing` FOREIGN KEY (`billing`) REFERENCES `address` (`id`) ON DELETE CASCADE,
