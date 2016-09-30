@@ -42,6 +42,7 @@ $getcart = mysqli_query($dblink,"SELECT *  FROM `orderitem` WHERE `orderid` = $i
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
 </head>
 <body>
+<?php include('menu.php'); ?>
 <div class="container">
     <div class="row">
         <div class="small-6 large-3 columns">

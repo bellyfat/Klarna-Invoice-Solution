@@ -32,8 +32,9 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
 <!--[if lt IE 10]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
-
+<?php include('menu.php'); ?>
 <div class="container">
+
     <form method="post" id="buyForm" action="api/buy">
         <div class="row">
             <div class="large-6 columns small-6">
