@@ -3,7 +3,7 @@
 include "../db.php";
 
 global $dblink;
-echo $path_only = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+global $rootFolder;
 if(isset($_POST["login"]))
 {
     $enteredPass = $_POST["pass"];
@@ -16,9 +16,8 @@ if(isset($_POST["login"]))
         {
             $_SESSION["loggedInUser"] = true;
             $_SESSION["user"] = $user["id"];
-            header("Location:/kpm_solution/");
+            header("Location:/".$rootFolder);
         }
-
     }
     echo "Could not login";
 }

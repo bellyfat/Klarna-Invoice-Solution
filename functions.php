@@ -7,9 +7,10 @@
  */
 function verifyLoggedin()
 {
+    global $rootFolder;
     if(!isset($_SESSION["user"]))
     {
-        header("Location:admin/login.php");
+        header("Location:/".$rootFolder."/admin/login.php");
     }
 }
 function verifyAdminPrivileges()
