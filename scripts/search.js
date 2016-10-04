@@ -15,9 +15,10 @@ $("#order-type").on('change',function()
             {
                 console.log(item);
                 $(".orderlist").append('<div class="row">'+
-                '<div class="small-4 columns"><a href="orderview.php?id='+item.id+'">'+item.reservation+'</a></div>'+
-                '<div class="small-4 columns"><span>'+item.status+'</span></div>'+
-                '<div class="small-4 columns"></div>'+
+                '<div class="small-3 columns"><a href="orderview.php?id='+item.id+'">'+item.reservation+'</a></div>'+
+                '<div class="small-3 columns"><span>'+item.status+'</span></div>'+
+                '<div class="small-2 columns"><span>'+item.sum+'</span></div>'+
+                '<div class="small-4 columns"><span>'+item.datetime+'</span></div>'+
                 '</div>');
             });
     })

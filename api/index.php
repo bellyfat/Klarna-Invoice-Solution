@@ -174,16 +174,16 @@ $app->get('/orders/{status}[/from/{fromdate}/to/{todate}]', function (Request $r
     switch($status)
     {
         case "processing";
-            $sql = "SELECT * FROM `order` WHERE `invoice` IS NULL AND (`status` = 'Reserved' OR `status` = 'Pending') AND `datetime` >= '$fromdate' AND `datetime` <='$todate' AND storeid IN (SELECT storeid from user_stores WHERE userid=$userID)";
+            $sql = "SELECT *,(SELECT SUM(orderitem.incvat * orderitem.quantity) FROM orderitem WHERE orderitem.orderid = order.id) as sum FROM `order` WHERE `invoice` IS NULL AND (`status` = 'Reserved' OR `status` = 'Pending') AND `datetime` >= '$fromdate' AND `datetime` <='$todate' AND storeid IN (SELECT storeid from user_stores WHERE userid=$userID)";
             break;
         case "complete":
-            $sql = "SELECT * FROM `order` WHERE `invoice` IS NOT NULL AND `status` = 'Complete' AND `datetime` >= '$fromdate' AND `datetime` <='$todate' AND storeid IN (SELECT storeid from user_stores WHERE userid=$userID)";
+            $sql = "SELECT *,(SELECT SUM(orderitem.incvat * orderitem.quantity) FROM orderitem WHERE orderitem.orderid = order.id) as sum FROM `order` WHERE `invoice` IS NOT NULL AND `status` = 'Complete' AND `datetime` >= '$fromdate' AND `datetime` <='$todate' AND storeid IN (SELECT storeid from user_stores WHERE userid=$userID)";
             break;
         case "cancelled":
-            $sql = "SELECT * FROM `order` WHERE `status` = 'Cancelled' AND `datetime` >= '$fromdate' AND `datetime` <='$todate' AND storeid IN (SELECT storeid from user_stores WHERE userid=$userID)";
+            $sql = "SELECT *,(SELECT SUM(orderitem.incvat * orderitem.quantity) FROM orderitem WHERE orderitem.orderid = order.id) as sum FROM `order` WHERE `status` = 'Cancelled' AND `datetime` >= '$fromdate' AND `datetime` <='$todate' AND storeid IN (SELECT storeid from user_stores WHERE userid=$userID)";
             break;
         default:
-            $sql = "SELECT * FROM `order` WHERE `datetime` >= '$fromdate' AND `datetime` <='$todate' AND storeid IN (SELECT storeid from user_stores WHERE userid=$userID)";
+            $sql = "SELECT *,(SELECT SUM(orderitem.incvat * orderitem.quantity) FROM orderitem WHERE orderitem.orderid = order.id) as sum FROM `order` WHERE `datetime` >= '$fromdate' AND `datetime` <='$todate' AND storeid IN (SELECT storeid from user_stores WHERE userid=$userID)";
     }
     global $dblink;
     $orders = mysqli_query($dblink,$sql);

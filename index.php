@@ -74,7 +74,7 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
                 <label class="cui__input__label">
                     Email
 
-                    <input  name="customer[email]" class="cui__input__input" id="email"  type="text"></label>
+                    <input  name="customer[email]" class="cui__input__input" id="email"  type="email"></label>
             </div>
             <div class="large-3 columns small-12">
                 <label class="cui__input__label">
@@ -87,32 +87,32 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
                 <label class="cui__input__label">
                     firstname
 
-                    <input class="cui__input__input" id="custname" type="text" value="test" name="customer[fname]"></label>
+                    <input class="cui__input__input" id="custname" type="text"  name="customer[fname]"></label>
             </div>
             <div class="large-3 columns small-12">
                 <label class="cui__input__label">
                     lastname
 
-                    <input type="text" class="cui__input__input" id="custsurname" value="testlast" name="customer[lname]"/></label>
+                    <input type="text" class="cui__input__input" id="custsurname"  name="customer[lname]"/></label>
 
             </div>
             <div class="large-5 columns small-12">
                 <label class="cui__input__label">
                     street
 
-                    <input type="text" class="cui__input__input" id="custstreet" value="teststreet" name="customer[street]"/></label>
+                    <input type="text" class="cui__input__input" id="custstreet"  name="customer[street]"/></label>
             </div>
             <div class="large-4 columns small-12">
                 <label class="cui__input__label">
                     city
 
-                    <input type="text" class="cui__input__input" id="custcity" value="testcity" name="customer[city]"/></label>
+                    <input type="text" class="cui__input__input" id="custcity"  name="customer[city]"/></label>
             </div>
             <div class="large-3 columns small-12">
                 <label class="cui__input__label">
                     postal
 
-                    <input type="text" class="cui__input__input" id="custpostal" value="testpostal" name="customer[zip]"/></label>
+                    <input type="text" class="cui__input__input" id="custpostal"  name="customer[zip]"/></label>
             </div>
         </div>
         <div id="orderLines" class="row">
