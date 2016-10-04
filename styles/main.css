@@ -1,5 +1,9 @@
 input[type="text"],
 input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="number"]:focus,
+input[type="tel"]:focus,
 input[type="email"]:focus,
 input[type="text"]:focus
 {

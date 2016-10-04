@@ -80,7 +80,7 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
                 <label class="cui__input__label">
                     Phone
 
-                    <input  name="customer[cellno]" class="cui__input__input" id="phone"  type="text"></label>
+                    <input  name="customer[cellno]" class="cui__input__input" id="phone"  type="tel"></label>
             </div>
 
             <div class="large-3 columns small-12">
