@@ -89,7 +89,7 @@ $getcart = mysqli_query($dblink,"SELECT *  FROM `orderitem` WHERE `orderid` = $i
             <div class="medium-2 small-3 columns"><?php echo  gettext("SKU") ?></div>
             <div class="medium-4 small-7 columns"><?php echo  gettext("Name") ?></div>
             <div class="medium-1 small-2 columns"><?php echo  gettext("Qt") ?></div>
-            <div class="medium-1 small-3 columns hide-for-small-only"><?php echo  gettext("Price") ?></div>
+            <div class="medium-1 small-3 columns hide-for-small-only"><?php echo  gettext("Ex vat") ?></div>
             <div class="medium-1 small-3 columns hide-for-small-only"><?php echo  gettext("Vat") ?></div>
             <div class="medium-1 small-2 columns hide-for-small-only"><?php echo  gettext("Tot Ex") ?></div>
             <div class="medium-1 small-2 columns hide-for-small-only"><?php echo  gettext("Tot Inc") ?></div>
