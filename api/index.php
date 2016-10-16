@@ -27,14 +27,14 @@ global $dblink;
 $logger = new KlarnaLogger($dblink);
 $app->get('/{store}/adress/{pno}', function (Request $request, Response $response) {
     global $dblink;
-    global $logger,
+    global $logger;
     $klarnaHelper = new KlarnaHelper($dblink);
     $storeid = $request->getAttribute('store');
     $k = $klarnaHelper->getConfigForStore($storeid);
 
 
     $pno = $request->getAttribute('pno');
-    $logger->logInformation("Looking up adress for "$pno);
+    $logger->logInformation("Looking up adress for ".$pno);
     $addrs = $k->getAddresses($pno);
     foreach($addrs as $ad)
     {
