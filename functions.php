@@ -17,11 +17,15 @@ function verifyAdminPrivileges()
 {
     global $dblink;
     verifyLoggedin();
-    $loggedin = $_SESSION["user"];
+    $loggedin = getUserID();
     $users = mysqli_query($dblink,"SELECT * FROM `user` WHERE `id` = $loggedin");
     $currentUser = mysqli_fetch_assoc($users);
     if($currentUser["level"] != 0)
     {
         die("You dont have access to view this page");
     }
+}
+function getUserID()
+{
+    return $_SESSION["user"];
 }
