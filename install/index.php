@@ -12,7 +12,6 @@ $lang= $languages[0];
 
 $lang = str_replace("-","_",$lang);
 setlocale(LC_ALL,$lang);
-
 if(isset($_POST["install"])) {
     $prefix = $_POST["prefix"];
     $server = $_POST["server"];
@@ -24,12 +23,16 @@ if(isset($_POST["install"])) {
     $dblink = mysqli_connect($server, $user, $pass);
     echo mysqli_error($dblink);
     if (!$dblink) {
+
         die("Incorrect Params - Could not connect");
     }
+    $logger = new KlarnaLogger($dblink);
+    $logger->logInformation("successfully installed DB at ".$server);
     $fileres = file_put_contents("../db.php", "<?php session_start(); \$rootFolder = '".$install_folder."'; \$dblink = mysqli_connect(\"" . $server . "\", \"" . $user . "\", \"" . $pass . "\", \"" . $prefix . "_kpm\"); ?>");
     if($fileres === false)
     {
         die("something went wrong with file-creation");
+        $logger->logError("could not save db file");
     }
    $res = mysqli_query($dblink,"CREATE DATABASE IF NOT EXISTS `".$prefix."_kpm` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;");
     echo mysqli_error($dblink);

@@ -36,7 +36,7 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
                 <label class="">
                     Please write pno / orgnummer
 
-                    <input  class="" id="pno"  type="text"></label>
+                    <input  class="" id="pno" name="pno"  type="text"></label>
             </div>
             <div class="large-6 columns small-6">
                 <a class="button secondary large" id="getadress" href="#" class="">

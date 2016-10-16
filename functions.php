@@ -27,5 +27,9 @@ function verifyAdminPrivileges()
 }
 function getUserID()
 {
-    return $_SESSION["user"];
+    if(isset($_SESSION["user"]))
+    {
+        return $_SESSION["user"];
+    }
+    return 0;
 }

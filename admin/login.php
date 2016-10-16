@@ -4,6 +4,7 @@ include "../db.php";
 
 global $dblink;
 global $rootFolder;
+$logger = new KlarnaLogger($dblink);
 if(isset($_POST["login"]))
 {
     $enteredPass = $_POST["pass"];
@@ -16,9 +17,11 @@ if(isset($_POST["login"]))
         {
             $_SESSION["loggedInUser"] = true;
             $_SESSION["user"] = $user["id"];
+            $logger->logInformation("User successfully logged in");
             header("Location:/".$rootFolder);
         }
     }
+    $logger->logError("User failed to login with email ".$email);
     echo "Could not login";
 }
 

@@ -13,18 +13,18 @@ class KlarnaLogger
     {
         $this->dblink = $dblink;
     }
-    function logInformation()
+    public function logInformation($message)
     {
-
+        $this->log($message,1);
     }
-    function logError()
+    public function logError($message)
     {
-
+        $this->log($message,2);
     }
     private function log($string,$level)
     {
         $useragent = $_SERVER['HTTP_USER_AGENT'];
         $user = getUserID();
-        mysqli_query($this->dblink,"INSERT into log (`message`,`user`,`browser`) VALUES ('$string',''$user,'$useragent')");
+        mysqli_query($this->dblink,"INSERT into log (`message`,`user`,`browser`) VALUES ('$string',$user,'$useragent',$level)");
     }
 }

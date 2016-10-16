@@ -23,14 +23,18 @@ $configuration = [
 ];
 $c = new \Slim\Container($configuration);
 $app = new \Slim\App($c);
+global $dblink;
+$logger = new KlarnaLogger($dblink);
 $app->get('/{store}/adress/{pno}', function (Request $request, Response $response) {
     global $dblink;
+    global $logger,
     $klarnaHelper = new KlarnaHelper($dblink);
     $storeid = $request->getAttribute('store');
     $k = $klarnaHelper->getConfigForStore($storeid);
 
-    $pno = $request->getAttribute('pno');
 
+    $pno = $request->getAttribute('pno');
+    $logger->logInformation("Looking up adress for "$pno);
     $addrs = $k->getAddresses($pno);
     foreach($addrs as $ad)
     {
@@ -42,15 +46,20 @@ $app->get('/{store}/adress/{pno}', function (Request $request, Response $respons
         "postal"=>utf8_encode($ad->getZipCode()),
         "company" =>utf8_encode($ad->getCompanyName()));
     }
+    $logger->logInformation("Found adresses at ".json_encode($res));
     $newResponse = $response->withJson($res);
     return $newResponse;
 });
 $app->post('/{store}/buy', function (Request $request, Response $response) {
     global $dblink;
+    global $logger;
+    $logger->logInformation("starting purchase");
     $storeid = $request->getAttribute('store');
     $klarnaHelper = new KlarnaHelper($dblink);
     $k = $klarnaHelper->getConfigForStore($storeid);
     $data = $request->getParsedBody();
+    $logger->logInformation("starting purchase for storeID ".$storeid." with data ".json_encode($data));
+    $pno = $data["pno"];
     $ticket_data = [];
     $pclass = $data["pclass"];
     $address = new Address($data['customer']['email'],
@@ -105,7 +114,8 @@ $firstname = $address->getFirstName();
     $k->setClientIP("192.0.2.9");
     $k->setAddress(Flags::IS_BILLING, $address);
     $k->setAddress(Flags::IS_SHIPPING, $address);
-    $result =$k->reserveAmount("8803071797",null,$totalAmount,Flags::RSRV_SEND_BY_EMAIL);
+    $result =$k->reserveAmount($pno,null,$totalAmount,Flags::RSRV_SEND_BY_EMAIL);
+    $logger->logInformation("completed purchase for pno ".$pno);
 
    /* $result = $k->reserveAmount(
         '4103219202', // PNO (Date of birth for AT/DE/NL)
