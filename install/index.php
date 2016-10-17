@@ -38,12 +38,19 @@ if(isset($_POST["install"])) {
     }
    $res = mysqli_query($dblink,"CREATE DATABASE IF NOT EXISTS `".$prefix."_kpm` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;");
     echo mysqli_error($dblink);
-    $dblink = mysqli_connect($server, $user, $pass,$prefix."_kpm");
-    $sql = file_get_contents('data.sql');
-    mysqli_multi_query($dblink,$sql);
-
     mysqli_close($dblink);
     $dblink = mysqli_connect($server, $user, $pass,$prefix."_kpm");
+    $sql = file_get_contents('data.sql');
+  //  mysqli_multi_query($dblink, $sql);
+    if ( mysqli_multi_query($dblink, $sql)) {
+        do {
+            if ($result = mysqli_store_result($dblink)) {
+                mysqli_free_result($result);
+            }
+
+        } while (mysqli_more_results($dblink) && mysqli_next_result($dblink));
+    }
+
     $createHash = password_hash($adminpass."".sha1($adminpass),PASSWORD_BCRYPT);
     $sql = "INSERT INTO `user` (`email`, `passwordhash`, `level`) VALUES
 ('$adminuser', '$createHash', 0);";
