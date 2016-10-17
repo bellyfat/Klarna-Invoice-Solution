@@ -58,8 +58,13 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
             <div class="large-12 columns">
 
                 <div class="store-select small-12">
+                    <?php if(mysqli_num_rows($stores) <= 0)
+                    {
+                        echo '<span class="label alert">'.gettext("You have no stores connected to your account").'</span>';
+                    }?>
                     <label>Select Store<select id="purchasestore" name="purchasestore">
                             <?php
+
                             while($st = mysqli_fetch_assoc($stores))
                             {
                                 echo '<option value="'.$st["id"].'">'.$st["name"].'</option>';
