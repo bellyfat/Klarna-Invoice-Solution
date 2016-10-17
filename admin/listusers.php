@@ -26,8 +26,9 @@ $allusers = mysqli_query($dblink,"SELECT * FROM user");
         <?php
         while($user = mysqli_fetch_assoc($allusers))
         {
-            echo $user["email"];
-            echo "<br>";
+            echo '<div class="small-12 columns">';
+            echo '<a href="add_user_to_store.php?user='.$user["id"].'">'.$user["email"].'</a>';
+            echo "</div>";
         }
         ?>
     </div>
