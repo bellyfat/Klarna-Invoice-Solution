@@ -62,6 +62,7 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
     $data = $request->getParsedBody();
     $logger->logInformation("starting purchase for storeID ".$storeid." with data ".json_encode($data));
     $pno = $data["pno"];
+    $email = $data["customer"]["email"];
     $ticket_data = [];
     $pclass = $data["pclass"];
     $address = new Address($data['customer']['email'],
@@ -134,7 +135,10 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
         $status = $result[1];
     }
     //Creating Order
-    mysqli_query($dblink,"INSERT INTO `order` (reservation,billing,shipping,storeid) VALUES ('$inv',$billingAddressId,$shippingAddressId,$storeid)");
+    $pno = str_replace('-','',$pno);
+    $pno = str_replace(' ','',$pno);
+    mysqli_query($dblink,"INSERT INTO `order` (reservation,billing,shipping,storeid,pno,email) VALUES ('$inv',$billingAddressId,$shippingAddressId,$storeid,'$pno','$email')");
+    echo mysqli_error($dblink);
     $orderID = mysqli_insert_id($dblink);
     foreach($items as $item)
     {

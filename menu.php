@@ -13,6 +13,7 @@
             <li <?php if(basename($_SERVER["SCRIPT_FILENAME"]) == "index.php") { echo "class='active'";} ?>><a href="index.php" >Place order</a></li>
             <li <?php if(basename($_SERVER["SCRIPT_FILENAME"]) == "ordersearch.php") { echo "class='active'";} ?>><a href="ordersearch.php">Search Order</a></li>
             <li <?php if(basename($_SERVER["SCRIPT_FILENAME"]) == "admin.php") { echo "class='active'";} ?>><a href="admin/index.php">Admin</a></li>
+            <li><form method="post" action="findorder.php"><input  style="height: 2rem;" type="search" placeholder="search" name="search"/></form></li>
         </ul>
     </div>
 </div>
