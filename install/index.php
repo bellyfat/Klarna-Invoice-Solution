@@ -37,7 +37,7 @@ if(isset($_POST["install"])) {
         $logger->logError("could not save db file");
     }
    $res = mysqli_query($dblink,"CREATE DATABASE IF NOT EXISTS `".$prefix."_kpm` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;");
-    echo mysqli_error($dblink);
+
     mysqli_close($dblink);
     $dblink = mysqli_connect($server, $user, $pass,$prefix."_kpm");
     $sql = file_get_contents('data.sql');
@@ -56,7 +56,7 @@ if(isset($_POST["install"])) {
 ('$adminuser', '$createHash', 0);";
     mysqli_query($dblink,$sql);
     echo mysqli_error($dblink);
-   // header("Location:/".$install_folder."/complete.php");
+    header("Location:/".$install_folder."/complete.php");
 }
 ?>
 <link rel="stylesheet" href="../styles/foundation.min.css">
