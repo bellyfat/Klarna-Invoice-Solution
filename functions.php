@@ -12,7 +12,7 @@ function verifyLoggedin()
     {
         header("Location:/".$rootFolder."/admin/login.php");
     }
-}
+} 
 function verifyAdminPrivileges()
 {
     global $dblink;

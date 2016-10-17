@@ -2,6 +2,8 @@
 
 include "../db.php";
 
+include '../KlarnaLogger.php';
+include '../functions.php';
 global $dblink;
 global $rootFolder;
 $logger = new KlarnaLogger($dblink);

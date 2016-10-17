@@ -5,6 +5,8 @@
  * Date: 2016-09-23
  * Time: 14:31
  */
+include '../KlarnaLogger.php';
+include '../functions.php';
 bindtextdomain("klarna", "./localization");
 Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 $languages = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
@@ -39,7 +41,15 @@ if(isset($_POST["install"])) {
     $dblink = mysqli_connect($server, $user, $pass,$prefix."_kpm");
     $sql = file_get_contents('data.sql');
     mysqli_multi_query($dblink,$sql);
-    header("Location:/".$install_folder."/complete.php");
+
+    mysqli_close($dblink);
+    $dblink = mysqli_connect($server, $user, $pass,$prefix."_kpm");
+    $createHash = password_hash($adminpass."".sha1($adminpass),PASSWORD_BCRYPT);
+    $sql = "INSERT INTO `user` (`email`, `passwordhash`, `level`) VALUES
+('$adminuser', '$createHash', 0);";
+    mysqli_query($dblink,$sql);
+    echo mysqli_error($dblink);
+   // header("Location:/".$install_folder."/complete.php");
 }
 ?>
 <link rel="stylesheet" href="../styles/foundation.min.css">

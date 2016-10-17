@@ -9,6 +9,8 @@
 require 'vendor/autoload.php';
 include ("../db.php");
 include ('KlarnaHelper.php');
+include ('../KlarnaLogger.php');
+include ('../functions.php');
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use Klarna\XMLRPC\Klarna;
@@ -73,7 +75,7 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
         $data['customer']['city'],209);
     $orderLines = $data['orderlines'];
     $totalAmount =0;
-$firstname = $address->getFirstName();
+    $firstname = $address->getFirstName();
     $lastname =$address->getLastName();
     $street = $address->getStreet();
     $postal = $address->getZipCode();

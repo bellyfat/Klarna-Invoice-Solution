@@ -25,6 +25,7 @@ class KlarnaLogger
     {
         $useragent = $_SERVER['HTTP_USER_AGENT'];
         $user = getUserID();
-        mysqli_query($this->dblink,"INSERT into log (`message`,`user`,`browser`) VALUES ('$string',$user,'$useragent',$level)");
+        mysqli_query($this->dblink,"INSERT into log (`message`,`user`,`browser`,`level`) VALUES ('$string',$user,'$useragent',$level)");
+        echo mysqli_error($this->dblink);
     }
 }
