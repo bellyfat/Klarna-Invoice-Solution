@@ -39,15 +39,23 @@ $('#buy').on('click',function(e)
     e.preventDefault();
     var selectedstore = $("#purchasestore").val();
     //$(this).addClass("is-disabled");
-    $.post('api/'+selectedstore+'/buy', $('#buyForm').serialize(),function(data)
-    {
-        if(data.invno)
+    $.post('api/'+selectedstore+'/buy', $('#buyForm').serialize(),"json")
+        .done(function(data)
         {
-            $('.dialog').show();
-            $('#invoiceLabel').html(data.invno);
-            $('#amountlabel').html(data.amount+' KR');
-        }
-    })
+            if(data.invno)
+            {
+                $('.successdialog').show();
+                $('#invoiceLabel').html(data.invno);
+                $('#amountlabel').html(data.amount+' KR');
+            }
+        })
+        .fail(function(data)
+        {
+            data = JSON.parse(data.responseText);
+            $('.errordialog').show();
+            $('#errormessage').html(data.message);
+
+        })
 })
 $('#adresses').on('change',function()
 {
@@ -70,9 +78,13 @@ $('#addNewProd').on('click',function()
     var copy = $('#orderLine').html();
     $('#orderLine').append(copy);
 });
-$('.dialog .close').click(function () {
+$('.successdialog .close').click(function () {
     $('.dialog').hide();
     window.location.reload();
+});
+$('.errordialog .close').click(function () {
+    $('.dialog').hide();
+
 });
 $('#paymentmethods').on('change',function()
 {

@@ -119,16 +119,16 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
     $k->setAddress(Flags::IS_SHIPPING, $address);
 
     try{
-        $result =$k->reserveAmount($pno,null,$totalAmount,Flags::RSRV_SEND_BY_EMAIL, $pclass); //TODO: remove order if failed
+        $result =$k->reserveAmount($pno,null,$totalAmount,Flags::RSRV_SEND_BY_EMAIL, $pclass);
     }
     catch(\Klarna\XMLRPC\Exception\KlarnaException $e)
     {
-        echo $billingAddressId;
         $logger->logError("Could not place order recieved error ".$e->getMessage());
         mysqli_query($dblink,"DELETE FROM `address` WHERE `id` = $billingAddressId OR `id` = $shippingAddressId");
-        $res = array("status" =>"failed", "message" => json_encode(utf8_encode($e->__toString())));
+        $error = mb_convert_encoding($e->__toString(),"utf-8","ISO-8859-1");
+        $res = array("status" =>"failed", "message" => $error);
         $newResponse = $response->withJson($res);
-        return $newResponse;
+        return $newResponse->withStatus(400);
 
     }
 
