@@ -129,18 +129,10 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
         $res = array("status" =>"failed", "message" => $error);
         $newResponse = $response->withJson($res);
         return $newResponse->withStatus(400);
-
     }
 
     $logger->logInformation("completed purchase for pno ".$pno);
 
-    /* $result = $k->reserveAmount(
-         '4103219202', // PNO (Date of birth for AT/DE/NL)
-         null, // KlarnaFlags::MALE, KlarnaFlags::FEMALE (AT/DE/NL only)
-         $pclass,   // Automatically calculate and reserve the cart total amount
-         Flags::NO_FLAG,
-         PClass::INVOICE
-     );*/
     $inv = $result[1];
     $status = $result[0];
     if(strlen($result[0]) > $inv)
@@ -171,12 +163,42 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
     $newResponse = $response->withJson($res);
     return $newResponse;
 });
-$app->get('/methods', function (Request $request, Response $response) {
+$app->get('/{storeid}/methods', function (Request $request, Response $response) {
+    $storeid = $request->getAttribute('storeid');
+    global $dblink;
+    $storeinfo = mysqli_query($dblink,"SELECT * FROM `store` WHERE `id` = $storeid");
+     $store = mysqli_fetch_assoc($storeinfo);
+    switch($store["country"])
+    {
+        case "SE":
+            $language = "sv_se";
+            $currency = "SEK";
+            break;
+        case "NO":
+            $language = "nb_no";
+            $currency = "NOK";
+            break;
+        case "DE":
+            $language = "de_de";
+            $currency = "EUR";
+            break;
+        case "FI":
+            $language = "fi_fi";
+            $currency = "EUR";
+            break;
+        case "DK":
+            $language = "da_dk";
+            $currency = "DKK";
+            break;
+    }
+    $shared = $store["shared"];
+    $env = $store["testmode"] == 0 ? "": "-test";
+    $eid = $store["eid"];
     $ch = curl_init();
-    $digest = base64_encode(pack("H*",(hash("sha256",("6653:SEK:testbutik")))));
+    $digest = base64_encode(pack("H*",(hash("sha256",($eid.":".$currency.":".$shared)))));
 
     // set url
-    curl_setopt($ch, CURLOPT_URL, "https://api-test.klarna.com/touchpoint/checkout/?merchant_id=6653&currency=SEK&locale=sv_se&total_price=500000");
+    curl_setopt($ch, CURLOPT_URL, "https://api".$env.".klarna.com/touchpoint/checkout/?merchant_id=".$eid."&currency=".$currency."&locale=".$language."&total_price=500000");
 
 
     //return the transfer as a string

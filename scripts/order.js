@@ -3,7 +3,12 @@
  */
 $(document).ready(function()
 {
-    $.get('api/methods',function(data)
+    getMethodsforStore($("#purchasestore option:selected").val());
+})
+function getMethodsforStore(store)
+{
+    $('#paymentmethods').html("");
+    $.get('api/'+store+'/methods',function(data)
     {
         $.each(data.payment_methods, function (i, item) {
             $('#paymentmethods').append($('<option>', {
@@ -12,8 +17,11 @@ $(document).ready(function()
             }));
         });
     })
-})
-
+}
+$("#purchasestore").on("change",function()
+{
+    getMethodsforStore($("#purchasestore option:selected").val());
+});
 var CustomerAddresses;
 $('#getadress').on('click',function()
 {
