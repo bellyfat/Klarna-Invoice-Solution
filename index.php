@@ -1,6 +1,7 @@
 <?php
 include('db.php');
 include('functions.php');
+
 global $dblink;
 verifyLoggedin();
 $userID= $_SESSION["user"];

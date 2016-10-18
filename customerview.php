@@ -10,7 +10,7 @@ include 'functions.php';
 $cID = $_GET["cid"];
 $allorders = mysqli_query($dblink,"SELECT * FROM `order` WHERE pno = '$cID'");
 $alladresses = mysqli_query($dblink,"SELECT * FROM `address` WHERE id in (SELECT `billing` from `order` WHERE `pno` =  '$cID')");
-$customervalue = mysqli_query($dblink,"SELECT SUM(incvat) as customervalue FROM orderitem where orderitem.orderid IN (SELECT id FROM `order` WHERE pno = '$cID') ");
+$customervalue = mysqli_query($dblink,"SELECT SUM(incvat) as customervalue FROM orderitem where orderitem.orderid IN (SELECT id FROM `order` WHERE pno = '$cID') "); // TODO: remove refunded orders
 $value = mysqli_fetch_assoc($customervalue);
 $value =  $value["customervalue"];
 ?>
@@ -22,7 +22,6 @@ $value =  $value["customervalue"];
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Klarna Invoice</title>
-
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700'
           rel='stylesheet'
           type='text/css'>
@@ -37,7 +36,7 @@ $value =  $value["customervalue"];
 <?php include('menu.php'); ?>
 <div class="container">
     <div class="row">
-        <div class="small-6 columns">
+        <div class="small-4 columns">
             <h2>Orders</h2>
             <?php
             while($ord = mysqli_fetch_assoc($allorders))
@@ -46,8 +45,8 @@ $value =  $value["customervalue"];
             }
             ?>
         </div>
-        <div class="small-6 columns">
-            <h2>Approved Adresses</h2>
+        <div class="small-4 columns">
+            <h2>Adresses</h2>
             <?php
             while($ord = mysqli_fetch_assoc($alladresses))
             {
@@ -55,6 +54,10 @@ $value =  $value["customervalue"];
             }
             ?>
         </div>
+        <div class="small-4 columns">
+            <h2>Customer Value</h2>
+            <?php echo $value; ?>
+            </div>
     </div>
 </div>
 </body></html>

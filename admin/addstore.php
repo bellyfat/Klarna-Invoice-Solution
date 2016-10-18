@@ -49,6 +49,13 @@ if(isset($_POST["savestore"]))
     <label>Store ID<input type="text" name="eid" placeholder="store ID"></label><br>
     <label>Shared Secret<input type="text" name="shared" placeholder="shared secret"></label><br>
     <label>Is Test Mode<input type="checkbox" name="testmode" placeholder="shared">Yes</label><br>
+    <label>Country<select name="country">
+            <option value="SE"><?php echo gettext("Sweden")?></option>
+            <option value="DK"><?php echo gettext("Denmark")?></option>
+            <option value="NO"><?php echo gettext("Norway")?></option>
+            <option value="DE"><?php echo gettext("Germany")?></option>
+            <option value="NL"><?php echo gettext("Holland")?></option>
+    </label><br>
     <label><input type="submit" class="float-right button" name="savestore" value="<?php echo gettext("Create new store")?>"/>
 </form>
         </div>
