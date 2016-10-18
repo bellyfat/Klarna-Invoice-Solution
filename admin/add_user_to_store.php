@@ -32,7 +32,7 @@ $accessget = mysqli_query($dblink,"SELECT *, (select user_stores.userid from use
           rel='stylesheet'
           type='text/css'>
     <link rel="icon"
-          href="favicon.ico">
+          href="../favicon.ico">
     <link rel="stylesheet" href="../styles/foundation.min.css">
     <link rel="stylesheet" href="../styles/main.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>

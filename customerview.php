@@ -38,7 +38,7 @@ $value =  $value["customervalue"];
 <?php include('menu.php'); ?>
 <div class="container">
     <div class="row">
-        <div class="small-4 columns">
+        <div class="small-4 columns orderlist">
             <h2>Orders</h2>
             <?php
             while($ord = mysqli_fetch_assoc($allorders))
@@ -47,12 +47,12 @@ $value =  $value["customervalue"];
             }
             ?>
         </div>
-        <div class="small-4 columns">
+        <div class="small-4 columns adresslist">
             <h2>Adresses</h2>
             <?php
             while($ord = mysqli_fetch_assoc($alladresses))
             {
-                echo $ord["firstname"].' '.$ord["lastname"].' '.$ord["street"].' '.$ord["postal"].' '.$ord["city"];
+                echo '<a href="#">'.$ord["firstname"].' '.$ord["lastname"].' '.$ord["street"].' '.$ord["postal"].' '.$ord["city"].'</a>';
             }
             ?>
         </div>
