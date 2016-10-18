@@ -3,7 +3,9 @@
 This repository provides a quick and simple way of using Klarna Payment Methods
 
 **System Requirements**
+
 PHP 5.4
+
 MYSQL Database
 
 **How to install**
@@ -17,5 +19,9 @@ MYSQL Database
 
 **Supported Countries**
 
-Sweden
+- Sweden
+- Norway
+- Finland
+- Denmark
+
 

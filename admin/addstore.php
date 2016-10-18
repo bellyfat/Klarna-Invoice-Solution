@@ -16,11 +16,12 @@ if(isset($_POST["savestore"]))
     $shared = $_POST["shared"];
     $country = $_POST["country"];
     $testmode = 0;
+    echo $_POST["testmode"];
     if(isset($_POST["testmode"]))
     {
         $testmode = $_POST["testmode"];
     }
-    var_dump($_POST);
+    $name = $name." ".$country." ".($testmode == 0 ? "LIVE" : "TEST");
     mysqli_query($dblink,"INSERT INTO `store` (`name`,`eid`,`shared`,`testmode`,`country`) VALUES ('$name','$eid','$shared',testmode,'$country')");
    echo  mysqli_error($dblink);
     //header("Location:listusers.php");
@@ -49,7 +50,7 @@ if(isset($_POST["savestore"]))
     <label>Name<input type="text" name="name" placeholder="Store Name"></label><br>
     <label>Store ID<input type="text" name="eid" placeholder="store ID"></label><br>
     <label>Shared Secret<input type="text" name="shared" placeholder="shared secret"></label><br>
-    <label>Is Test Mode<input type="checkbox" name="testmode" placeholder="shared">Yes</label><br>
+    <label>Is Test Mode<input type="checkbox" value="1" name="testmode" placeholder="shared">Yes</label><br>
     <label>Country<select name="country">
             <option value="SE"><?php echo gettext("Sweden")?></option>
             <option value="DK"><?php echo gettext("Denmark")?></option>
