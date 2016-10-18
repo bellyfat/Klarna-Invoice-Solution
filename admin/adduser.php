@@ -29,6 +29,8 @@ if(isset($_POST["saveuser"]))
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700'
           rel='stylesheet'
           type='text/css'>
+    <link rel="icon"
+          href="favicon.ico">
     <link rel="stylesheet" href="../styles/foundation.min.css">
     <link rel="stylesheet" href="../styles/main.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>

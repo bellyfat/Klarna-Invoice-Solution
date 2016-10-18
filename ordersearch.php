@@ -23,7 +23,8 @@ $userID= $_SESSION["user"];
           type='text/css'>
     <link rel="stylesheet" href="styles/foundation.min.css">
     <link rel="stylesheet" href="styles/main.css">
-
+    <link rel="icon"
+          href="favicon.ico">
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
