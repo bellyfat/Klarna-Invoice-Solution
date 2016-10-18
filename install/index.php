@@ -7,13 +7,7 @@
  */
 include '../KlarnaLogger.php';
 include '../functions.php';
-bindtextdomain("klarna", "./localization");
-Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-$languages = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
-$lang= $languages[0];
 
-$lang = str_replace("-","_",$lang);
-setlocale(LC_ALL,$lang);
 if(isset($_POST["install"])) {
     $prefix = $_POST["prefix"];
     $server = $_POST["server"];

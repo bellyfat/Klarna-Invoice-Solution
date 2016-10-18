@@ -2,9 +2,9 @@
 
 include("../db.php");
 global $dblink;
-$allusers = mysqli_query($dblink,"SELECT * FROM user");
+$allusers = mysqli_query($dblink,"SELECT * FROM `user`");
 ?>
-<!doctype html>
+<!doctype html> 
 <html class="" lang="">
 <head>
     <meta charset="utf-8">

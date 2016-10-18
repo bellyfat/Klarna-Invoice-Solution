@@ -40,13 +40,13 @@ $app->get('/{store}/adress/{pno}', function (Request $request, Response $respons
     $addrs = $k->getAddresses($pno);
     foreach($addrs as $ad)
     {
-       
+
         $res[] = array("firstname"=>utf8_encode($ad->getFirstName()),
-        "lastname"=>utf8_encode($ad->getLastName()),
-        "street"=>utf8_encode($ad->getStreet()),
-        "city"=>utf8_encode($ad->getCity()),
-        "postal"=>utf8_encode($ad->getZipCode()),
-        "company" =>utf8_encode($ad->getCompanyName()));
+            "lastname"=>utf8_encode($ad->getLastName()),
+            "street"=>utf8_encode($ad->getStreet()),
+            "city"=>utf8_encode($ad->getCity()),
+            "postal"=>utf8_encode($ad->getZipCode()),
+            "company" =>utf8_encode($ad->getCompanyName()));
     }
     $logger->logInformation("Found adresses at ".json_encode($res));
     $newResponse = $response->withJson($res);
@@ -62,7 +62,8 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
     $data = $request->getParsedBody();
     $logger->logInformation("starting purchase for storeID ".$storeid." with data ".json_encode($data));
     $pno = $data["pno"];
-    $ticket_data = [];
+
+    $email = $data["customer"]["email"];
     $pclass = $data["pclass"];
     $address = new Address($data['customer']['email'],
         "",
@@ -72,7 +73,7 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
         "",
         $data['customer']['street'],
         $data['customer']['zip'],
-        $data['customer']['city'],209);
+        $data['customer']['city'],$k->getCountry());
     $orderLines = $data['orderlines'];
     $totalAmount =0;
     $firstname = $address->getFirstName();
@@ -116,16 +117,30 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
     $k->setClientIP("192.0.2.9");
     $k->setAddress(Flags::IS_BILLING, $address);
     $k->setAddress(Flags::IS_SHIPPING, $address);
-    $result =$k->reserveAmount($pno,null,$totalAmount,Flags::RSRV_SEND_BY_EMAIL);
+
+    try{
+        $result =$k->reserveAmount($pno,null,$totalAmount,Flags::RSRV_SEND_BY_EMAIL, $pclass);
+    }
+    catch(\Klarna\XMLRPC\Exception\KlarnaException $e)
+    {
+        $logger->logError("Could not place order recieved error ".$e->getMessage());
+        mysqli_query($dblink,"DELETE FROM `address` WHERE `id` = $billingAddressId OR `id` = $shippingAddressId");
+        $error = mb_convert_encoding($e->__toString(),"utf-8","ISO-8859-1");
+        $res = array("status" =>"failed", "message" => $error);
+        $newResponse = $response->withJson($res);
+        return $newResponse->withStatus(400);
+
+    }
+
     $logger->logInformation("completed purchase for pno ".$pno);
 
-   /* $result = $k->reserveAmount(
-        '4103219202', // PNO (Date of birth for AT/DE/NL)
-        null, // KlarnaFlags::MALE, KlarnaFlags::FEMALE (AT/DE/NL only)
-        $pclass,   // Automatically calculate and reserve the cart total amount
-        Flags::NO_FLAG,
-        PClass::INVOICE
-    );*/
+    /* $result = $k->reserveAmount(
+         '4103219202', // PNO (Date of birth for AT/DE/NL)
+         null, // KlarnaFlags::MALE, KlarnaFlags::FEMALE (AT/DE/NL only)
+         $pclass,   // Automatically calculate and reserve the cart total amount
+         Flags::NO_FLAG,
+         PClass::INVOICE
+     );*/
     $inv = $result[1];
     $status = $result[0];
     if(strlen($result[0]) > $inv)
@@ -134,7 +149,10 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
         $status = $result[1];
     }
     //Creating Order
-    mysqli_query($dblink,"INSERT INTO `order` (reservation,billing,shipping,storeid) VALUES ('$inv',$billingAddressId,$shippingAddressId,$storeid)");
+    $pno = str_replace('-','',$pno);
+    $pno = str_replace(' ','',$pno);
+    mysqli_query($dblink,"INSERT INTO `order` (reservation,billing,shipping,storeid,pno,email) VALUES ('$inv',$billingAddressId,$shippingAddressId,$storeid,'$pno','$email')");
+    echo mysqli_error($dblink);
     $orderID = mysqli_insert_id($dblink);
     foreach($items as $item)
     {
@@ -219,7 +237,7 @@ $app->post('/{store}/credit', function (Request $request, Response $response) {
     $ref = $request->getHeader("Referer");
     try
     {
-       $k->creditInvoice($orderid);
+        $k->creditInvoice($orderid);
     }
     catch(Exception $e)
     {

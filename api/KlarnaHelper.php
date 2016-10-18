@@ -32,13 +32,44 @@ class KlarnaHelper
         {
             $server =   Klarna::LIVE;
         }
+        $language = Language::SV;
+        $country = Country::SE;
+        $currency = Currency::SEK;
+        switch($store["country"])
+        {
+            case "SE":
+                $language = Language::SV;
+                $country = Country::SE;
+                $currency = Currency::SEK;
+                break;
+            case "NO":
+                $language = Language::NB;
+                $country = Country::NO;
+                $currency = Currency::NOK;
+                break;
+            case "DE":
+                $language = Language::DE;
+                $country = Country::DE;
+                $currency = Currency::EUR;
+                break;
+            case "FI":
+                $language = Language::FI;
+                $country = Country::FI;
+                $currency = Currency::EUR;
+                break;
+            case "DK":
+                $language = Language::DA;
+                $country = Country::DK;
+                $currency = Currency::DKK;
+                break;
+        }
 
         $k->config(
             $store["eid"],              // Merchant ID
             $store["shared"], // Shared secret
-            Country::SE,    // Purchase country
-            Language::SV,   // Purchase language
-            Currency::SEK,  // Purchase currency
+            $country,    // Purchase country
+            $language,   // Purchase language
+            $currency,  // Purchase currency
             $server        // Server
         );
         return $k;

@@ -1,6 +1,7 @@
 <?php
 include('db.php');
 include('functions.php');
+
 global $dblink;
 verifyLoggedin();
 $userID= $_SESSION["user"];
@@ -58,8 +59,13 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
             <div class="large-12 columns">
 
                 <div class="store-select small-12">
+                    <?php if(mysqli_num_rows($stores) <= 0)
+                    {
+                        echo '<span class="label alert">'.gettext("You have no stores connected to your account").'</span>';
+                    }?>
                     <label>Select Store<select id="purchasestore" name="purchasestore">
                             <?php
+
                             while($st = mysqli_fetch_assoc($stores))
                             {
                                 echo '<option value="'.$st["id"].'">'.$st["name"].'</option>';
@@ -177,7 +183,7 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
 
 
 
-<div class="dialog">
+<div class="successdialog dialog">
     <div class="dialog-inner">
         <span class="close button alert">X</span>
         <span class="label success">Order Successfull</span>
@@ -196,6 +202,20 @@ $stores = mysqli_query($dblink,"SELECT * FROM store WHERE id IN (SELECT storeid 
         <h2 class="cui__title--secondary">
             <span id="amountlabel"></span>
         </h2>
+
+    </div>
+</div>
+<div class="errordialog dialog">
+    <div class="dialog-inner">
+        <span class="close button alert">X</span>
+        <span class="label success">Order failed</span>
+        <h4 class="cui__text-label">
+            Message
+        </h4>
+
+        <p class="cui__paragraph--primary condensed">
+            <span id="errormessage"></span>
+        </p>
 
     </div>
 </div>
