@@ -14,13 +14,14 @@ if(isset($_POST["savestore"]))
     $name = $_POST["name"];
     $eid = $_POST["eid"];
     $shared = $_POST["shared"];
+    $country = $_POST["country"];
     $testmode = 0;
     if(isset($_POST["testmode"]))
     {
         $testmode = $_POST["testmode"];
     }
     var_dump($_POST);
-    mysqli_query($dblink,"INSERT INTO `store` (`name`,`eid`,`shared`,`testmode`) VALUES ('$name','$eid','$shared',testmode)");
+    mysqli_query($dblink,"INSERT INTO `store` (`name`,`eid`,`shared`,`testmode`,`country`) VALUES ('$name','$eid','$shared',testmode,'$country')");
    echo  mysqli_error($dblink);
     //header("Location:listusers.php");
 }

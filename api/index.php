@@ -40,13 +40,13 @@ $app->get('/{store}/adress/{pno}', function (Request $request, Response $respons
     $addrs = $k->getAddresses($pno);
     foreach($addrs as $ad)
     {
-       
+
         $res[] = array("firstname"=>utf8_encode($ad->getFirstName()),
-        "lastname"=>utf8_encode($ad->getLastName()),
-        "street"=>utf8_encode($ad->getStreet()),
-        "city"=>utf8_encode($ad->getCity()),
-        "postal"=>utf8_encode($ad->getZipCode()),
-        "company" =>utf8_encode($ad->getCompanyName()));
+            "lastname"=>utf8_encode($ad->getLastName()),
+            "street"=>utf8_encode($ad->getStreet()),
+            "city"=>utf8_encode($ad->getCity()),
+            "postal"=>utf8_encode($ad->getZipCode()),
+            "company" =>utf8_encode($ad->getCompanyName()));
     }
     $logger->logInformation("Found adresses at ".json_encode($res));
     $newResponse = $response->withJson($res);
@@ -62,8 +62,8 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
     $data = $request->getParsedBody();
     $logger->logInformation("starting purchase for storeID ".$storeid." with data ".json_encode($data));
     $pno = $data["pno"];
+
     $email = $data["customer"]["email"];
-    $ticket_data = [];
     $pclass = $data["pclass"];
     $address = new Address($data['customer']['email'],
         "",
@@ -73,7 +73,7 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
         "",
         $data['customer']['street'],
         $data['customer']['zip'],
-        $data['customer']['city'],209);
+        $data['customer']['city'],$k->getCountry());
     $orderLines = $data['orderlines'];
     $totalAmount =0;
     $firstname = $address->getFirstName();
@@ -117,16 +117,30 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
     $k->setClientIP("192.0.2.9");
     $k->setAddress(Flags::IS_BILLING, $address);
     $k->setAddress(Flags::IS_SHIPPING, $address);
-    $result =$k->reserveAmount($pno,null,$totalAmount,Flags::RSRV_SEND_BY_EMAIL);
+
+    try{
+        $result =$k->reserveAmount($pno,null,$totalAmount,Flags::RSRV_SEND_BY_EMAIL, $pclass); //TODO: remove order if failed
+    }
+    catch(\Klarna\XMLRPC\Exception\KlarnaException $e)
+    {
+        echo $billingAddressId;
+        $logger->logError("Could not place order recieved error ".$e->getMessage());
+        mysqli_query($dblink,"DELETE FROM `address` WHERE `id` = $billingAddressId OR `id` = $shippingAddressId");
+        $res = array("status" =>"failed", "message" => json_encode(utf8_encode($e->__toString())));
+        $newResponse = $response->withJson($res);
+        return $newResponse;
+
+    }
+
     $logger->logInformation("completed purchase for pno ".$pno);
 
-   /* $result = $k->reserveAmount(
-        '4103219202', // PNO (Date of birth for AT/DE/NL)
-        null, // KlarnaFlags::MALE, KlarnaFlags::FEMALE (AT/DE/NL only)
-        $pclass,   // Automatically calculate and reserve the cart total amount
-        Flags::NO_FLAG,
-        PClass::INVOICE
-    );*/
+    /* $result = $k->reserveAmount(
+         '4103219202', // PNO (Date of birth for AT/DE/NL)
+         null, // KlarnaFlags::MALE, KlarnaFlags::FEMALE (AT/DE/NL only)
+         $pclass,   // Automatically calculate and reserve the cart total amount
+         Flags::NO_FLAG,
+         PClass::INVOICE
+     );*/
     $inv = $result[1];
     $status = $result[0];
     if(strlen($result[0]) > $inv)
@@ -223,7 +237,7 @@ $app->post('/{store}/credit', function (Request $request, Response $response) {
     $ref = $request->getHeader("Referer");
     try
     {
-       $k->creditInvoice($orderid);
+        $k->creditInvoice($orderid);
     }
     catch(Exception $e)
     {
