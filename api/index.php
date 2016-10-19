@@ -114,7 +114,7 @@ $app->post('/{store}/buy', function (Request $request, Response $response) {
             $totalAmount += $orderLines["price"][$i];
         }
     }
-    $k->setClientIP("192.0.2.9");
+    $k->setClientIP($_SERVER['REMOTE_ADDR']);
     $k->setAddress(Flags::IS_BILLING, $address);
     $k->setAddress(Flags::IS_SHIPPING, $address);
 
