@@ -33,3 +33,13 @@ function getUserID()
     }
     return 0;
 }
+function getInvoiceUrl($order)
+{
+    if($order["testmode"] == 1)
+    {
+        return "https://online.testdrive.klarna.com/invoice_pdf.yaws/invoice_".$order["invoice"];
+    }
+    else{
+        return "https://online.klarna.com/invoice_pdf.yaws/invoice_".$order["invoice"];
+    }
+}

@@ -82,6 +82,22 @@ $getcart = mysqli_query($dblink,"SELECT *  FROM `orderitem` WHERE `orderid` = $i
             </div>
         </div>
     </div>
+    <?php
+    if(isset($order["invoice"]))
+    {
+    ?>
+    <div class="row">
+        <div class="small-12 columns large-6">
+            <form method="post" action="api/<?php echo $order["storeid"]?>/emailinvoice">
+                <input name="invoice" type="hidden" value="<?php echo $order["invoice"]?>">
+            <button class="button">Trigger email sendout</button>
+            </form>
+        </div>
+        <div class="small-12 columns large-6 ">
+            <button onclick="openInvoice('<?php echo getInvoiceUrl($order) ?>')" class="button float-right">Print Klarna Invoice</button>
+        </div>
+    </div>
+    <?php } ?>
     <div class="row">
         <div class="small-12 columns">
             <h1><?php echo gettext("Cart items");?></h1>
@@ -147,7 +163,7 @@ $getcart = mysqli_query($dblink,"SELECT *  FROM `orderitem` WHERE `orderid` = $i
 <!-- endbuild -->
 <script   src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
 <!-- build:js scripts/main.js -->
-<script src="scripts/main.js"></script>
+<script src="scripts/orderview.js"></script>
 <!-- endbuild -->
 </body>
 </html>

@@ -292,4 +292,17 @@ $app->post('/{store}/activate', function (Request $request, Response $response) 
     $newResponse = $response->withStatus(302)->withHeader("Location",$ref);
     return $newResponse;
 });
+$app->post('/{store}/emailinvoice', function (Request $request, Response $response) {
+    $data = $request->getParsedBody();
+    $invoice = $data["invoice"];
+    $storeid = $request->getAttribute('store');
+    global $dblink;
+    $klarnaHelper = new KlarnaHelper($dblink);
+    $k = $klarnaHelper->getConfigForStore($storeid);
+    $k->emailInvoice($invoice);
+    $ref = $request->getHeader("Referer");
+    $newResponse = $response->withStatus(302)->withHeader("Location",$ref);
+    return $newResponse;
+});
+
 $app->run();
