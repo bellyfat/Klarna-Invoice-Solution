@@ -1124,7 +1124,19 @@ class Klarna
         $this->orderid[0] = $orderid1;
         $this->orderid[1] = $orderid2;
     }
-
+    public function checkInvoiceStatus($invNo)
+    {
+        $digestSecret = self::digest(
+            self::colon($this->eid, $invNo, $this->secret)
+        );
+        $paramList = array(
+            $this->eid,
+            $invNo,
+            $digestSecret,
+        );
+        self::printDebug('order_info', $paramList);
+        return $this->xmlrpcCall('order_info', $paramList);
+    }
     /**
      * Sets the reference (person) and reference code, for the upcoming
      * transaction.

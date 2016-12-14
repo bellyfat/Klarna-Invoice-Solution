@@ -8,3 +8,10 @@ function openInvoice(inv)
     myWindow.print(); //DOES NOT WORK
 
 }
+function getInvoiceStatus(store,invoice)
+{
+    $.get("api/"+store+"/invoice/"+invoice,function(data)
+    {
+        $("#invoiceStatus").html("Is paid: "+data[1]+"</br>Due date: "+data[2]);
+    });
+}

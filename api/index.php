@@ -198,7 +198,8 @@ $app->get('/{storeid}/methods', function (Request $request, Response $response) 
     $digest = base64_encode(pack("H*",(hash("sha256",($eid.":".$currency.":".$shared)))));
 
     // set url
-    curl_setopt($ch, CURLOPT_URL, "https://api".$env.".klarna.com/touchpoint/checkout/?merchant_id=".$eid."&currency=".$currency."&locale=".$language."&total_price=500000");
+    $url = "https://api".$env.".klarna.com/touchpoint/checkout/?merchant_id=".$eid."&currency=".$currency."&locale=".$language."&total_price=500000";
+    curl_setopt($ch, CURLOPT_URL, $url);
 
 
     //return the transfer as a string
@@ -211,7 +212,6 @@ $app->get('/{storeid}/methods', function (Request $request, Response $response) 
 
     // $output contains the output string
     $output = curl_exec($ch);
-
     // close curl resource to free up system resources
     curl_close($ch);
     $newResponse = $response->withHeader('Content-type', 'application/json');
@@ -246,6 +246,19 @@ $app->get('/orders/{status}[/from/{fromdate}/to/{todate}]', function (Request $r
     }
     $newResponse = $response->withHeader('Content-type', 'application/json');
     $newResponse = $newResponse->write(json_encode($res));
+    return $newResponse;
+});
+$app->get('/{store}/invoice/{invoiceID}', function (Request $request, Response $response) {
+    global $dblink;
+    $invoiceID = $request->getAttribute('invoiceID');
+    $data = $request->getParsedBody();
+    $orderid = $data["id"];
+    $storeid = $request->getAttribute('store');
+    $klarnaHelper = new KlarnaHelper($dblink);
+    $k = $klarnaHelper->getConfigForStore($storeid);
+    $status = $k->checkInvoiceStatus($invoiceID);
+    $newResponse = $response->withHeader('Content-type', 'application/json');
+    $newResponse = $newResponse->write(json_encode($status));
     return $newResponse;
 });
 $app->post('/{store}/credit', function (Request $request, Response $response) {

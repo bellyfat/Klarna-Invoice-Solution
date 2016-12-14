@@ -37,9 +37,9 @@ function getInvoiceUrl($order)
 {
     if($order["testmode"] == 1)
     {
-        return "https://online.testdrive.klarna.com/invoice_pdf.yaws/invoice_".$order["invoice"];
+        return "https://online.testdrive.klarna.com/invoice_pdf.yaws/invoice_".$order["invoice"].".pdf";
     }
     else{
-        return "https://online.klarna.com/invoice_pdf.yaws/invoice_".$order["invoice"];
+        return "https://online.klarna.com/invoice_pdf.yaws/invoice_".$order["invoice"].".pdf";
     }
 }

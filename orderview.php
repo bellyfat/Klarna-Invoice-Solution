@@ -49,6 +49,7 @@ $getcart = mysqli_query($dblink,"SELECT *  FROM `orderitem` WHERE `orderid` = $i
     <div class="row">
         <div class="small-6 large-3 columns">
             <?php echo gettext("Status: "); echo $order["status"] ?>
+                <div id="invoiceStatus"></div>
         </div>
         <div class="small-6 large-3 columns">
             <?php echo gettext("Date of order: "); echo $order["datetime"] ?>
@@ -164,6 +165,12 @@ $getcart = mysqli_query($dblink,"SELECT *  FROM `orderitem` WHERE `orderid` = $i
 <script   src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
 <!-- build:js scripts/main.js -->
 <script src="scripts/orderview.js"></script>
+<script>
+    <?php if(isset($order["invoice"]))
+    {
+        echo "getInvoiceStatus('".$order["storeid"]."','".$order["invoice"]."');";
+    } ?>
+</script>
 <!-- endbuild -->
 </body>
 </html>
